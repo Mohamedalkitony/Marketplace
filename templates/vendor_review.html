@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مراجعات البائع</title>
+
+    <style>
+        /* styles.css */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            direction: rtl;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2em;
+            color: #0073e6;
+        }
+
+        .reviews {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .review {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .review h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .review-content {
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        .review-rating {
+            font-size: 1.1em;
+            color: #ffbc00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>مراجعات البائع</h1>
+        </header>
+
+        <section class="reviews">
+            {% if reviews %}
+                {% for review in reviews %}
+                    <div class="review">
+                        <h3>{{ review.user.username }}</h3>
+                        <p class="review-content">{{ review.content }}</p>
+                        <span class="review-rating">{{ review.rating }} ⭐</span>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>لا توجد مراجعات حالياً لهذا البائع.</p>
+            {% endif %}
+        </section>
+    </div>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #4B0082;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="file"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background-color: #4B0082;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #6a00c2;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Add Product</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="name">Product Name</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+
+            <label for="price">Price ($)</label>
+            <input type="number" step="0.01" id="price" name="price" required>
+
+            <label for="category">Category</label>
+            <select id="category" name="category" required>
+                <option value="">-- Select Category --</option>
+                <option value="sportswear">Sportswear</option>
+                <option value="supplements">Supplements</option>
+                <option value="equipment">Fitness Equipment</option>
+                <option value="membership">Gym Membership</option>
+                <option value="training">Personal Training Session</option>
+            </select>
+
+            <label for="image">Product Image</label>
+            <input type="file" id="image" name="image">
+
+            <button type="submit">Add Product</button>
+        </form>
+    </div>
+</body>
+</html>

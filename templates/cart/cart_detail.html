@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>سلة المشتريات</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f7f6fb;
+      color: #222;
+    }
+    header {
+      background: #6b46c1;
+      color: #fff;
+      padding: 16px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+    }
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      padding: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+    }
+    th {
+      background: #f3ecff;
+      color: #333;
+    }
+    tr:hover {
+      background: #faf8ff;
+    }
+    .btn {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+    .btn-danger {
+      background: #e53e3e;
+      color: #fff;
+    }
+    .btn-danger:hover {
+      background: #c53030;
+    }
+    .btn-primary {
+      background: #6b46c1;
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: #553c9a;
+    }
+    .summary {
+      text-align: right;
+      font-size: 18px;
+      font-weight: bold;
+      color: #111;
+      margin-top: 15px;
+    }
+    .empty {
+      text-align: center;
+      padding: 40px;
+      font-size: 18px;
+      color: #666;
+    }
+    .actions {
+      margin-top: 25px;
+      text-align: center;
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+  <header>سلة المشتريات</header>
+  <div class="container">
+    {% if cart %}
+      <table>
+        <thead>
+          <tr>
+            <th>المنتج</th>
+            <th>الكمية</th>
+            <th>سعر الوحدة</th>
+            <th>الإجمالي</th>
+            <th>إجراء</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in cart %}
+          <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.price }} د.ل</td>
+            <td>{{ item.total_price }} د.ل</td>
+            <td>
+              <a href="#" class="btn btn-danger">إزالة</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="summary">
+        المجموع الكلي: {{ cart.total_price }} د.ل
+      </div>
+      <div class="actions">
+        <a href="/" class="btn btn-primary">العودة للمتجر</a>
+        <a href="{% url 'Cart:checkout' %}" class="btn btn-primary">تأكيد الشراء</a>
+      </div>
+    {% else %}
+      <div class="empty">
+        السلة فارغة حاليًا 🛒
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>

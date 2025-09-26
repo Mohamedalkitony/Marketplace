@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>الطلبات متاعي</title>
+
+  <style>
+    :root{
+      --bg:#f6f4fb;
+      --card:#ffffff;
+      --purple-1:#6b21a8;
+      --purple-2:#8b5cf6;
+      --muted:#6b7280;
+      --success:#16a34a;
+      --danger:#dc2626;
+      --shadow: 0 6px 18px rgba(107,33,168,0.12);
+      --radius:12px;
+      --maxw:1100px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Segoe UI", Roboto, "Noto Naskh Arabic", Arial, sans-serif;
+      background:linear-gradient(180deg, var(--bg), #fff);
+      color:#111827;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:28px 16px;
+      direction: rtl;
+    }
+
+    .container{
+      max-width:var(--maxw);
+      margin:0 auto;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:20px;
+    }
+
+    header h1{
+      margin:0;
+      font-size:22px;
+      color:var(--purple-1);
+      letter-spacing:0.2px;
+    }
+
+    .sub{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .orders-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:16px;
+    }
+
+    @media(min-width:820px){
+      .orders-grid{
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:16px;
+      border:1px solid rgba(99,102,241,0.06);
+    }
+
+    .order-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:12px;
+    }
+
+    .order-id{
+      font-weight:700;
+      color:#111827;
+    }
+
+    .order-date{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .status{
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:600;
+      display:inline-block;
+    }
+    .status.pending{ background:rgba(245,158,11,0.12); color:#b45309; }
+    .status.processing{ background:rgba(59,130,246,0.08); color:#1e3a8a; }
+    .status.completed{ background:rgba(16,185,129,0.12); color:var(--success); }
+    .status.cancelled{ background:rgba(220,38,38,0.08); color:var(--danger); }
+
+    .order-body{
+      display:flex;
+      gap:12px;
+      flex-direction:column;
+    }
+
+    .order-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      border-top:1px dashed #efefef;
+      padding-top:12px;
+      margin-top:6px;
+    }
+
+    .meta{
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    .price{
+      font-weight:700;
+      color:var(--purple-1);
+      font-size:16px;
+    }
+
+    .actions{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    .btn{
+      border:0;
+      padding:8px 12px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+      font-size:14px;
+      background:linear-gradient(90deg,var(--purple-1),var(--purple-2));
+      color:#fff;
+      box-shadow: 0 6px 14px rgba(139,92,246,0.12);
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .btn.ghost{
+      background:transparent;
+      color:var(--purple-1);
+      border:1px solid rgba(139,92,246,0.12);
+      box-shadow:none;
+    }
+
+    .empty{
+      text-align:center;
+      padding:36px;
+      color:var(--muted);
+      border-radius:12px;
+      background:linear-gradient(180deg, rgba(139,92,246,0.03), transparent);
+      border:1px dashed rgba(139,92,246,0.06);
+    }
+
+    /* small helper */
+    .small{ font-size:13px; color:var(--muted); }
+    .tag{ display:inline-block; padding:6px 8px; border-radius:8px; font-size:13px; background:#faf5ff; color:var(--purple-1); border:1px solid rgba(139,92,246,0.06) }
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>الطلبات متاعي</h1>
+        <div class="sub">قائمة بكل الطلبات المرتبة من الأحدث للأقدم</div>
+      </div>
+      <div class="small">إجمالي الطلبات: <span class="tag">{{ orders|length }}</span></div>
+    </header>
+
+    {% if orders %}
+      <div class="orders-grid">
+        {% for order in orders %}
+          <article class="card">
+            <div class="order-top">
+              <div>
+                <div class="order-id">طلب رقم #{{ order.id }}</div>
+                <div class="order-date">{{ order.created_at|date:"d M Y - H:i" }}</div>
+              </div>
+
+              <div style="text-align:right">
+                {# حاول تستخدم الحقل المناسب للحالة في موديلك #}
+                {% if order.status %}
+                  <span class="status {% if order.status|lower == 'pending' %}pending{% elif order.status|lower == 'processing' %}processing{% elif order.status|lower == 'completed' %}completed{% elif order.status|lower == 'cancelled' or order.status|lower == 'canceled' %}cancelled{% endif %}">
+                    {{ order.get_status_display|default:order.status }}
+                  </span>
+                {% else %}
+                  <span class="status processing">قيد المعالجة</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="order-body">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+                <div class="meta">
+                  <!-- عدل الحقول هذو حسب موديلك -->
+                  <div>الزبون: <strong>{{ order.user.get_full_name|default:order.user.username }}</strong></div>
+                  <div>المنتجات: <span class="small">{{ order.items.count|default:"-" }} منتج</span></div>
+                </div>
+
+                <div style="text-align:left">
+                  <div class="price">{{ order.total_price|default:"0.00" }} د.ل</div>
+                  <div class="small">طريقة الدفع: {{ order.payment_method|default:"—" }}</div>
+                </div>
+              </div>
+
+              <div class="order-row">
+                <div class="meta">تفاصيل إضافية: <span class="small">{{ order.notes|default:"لا توجد ملاحظات" }}</span></div>
+
+                <div class="actions">
+                  {# استبدل 'order_detail' باسم اليوزر نيم في urls عندك أو استخدم رابط مباشر #}
+                  <a class="btn ghost" href="{% url 'Order:order_detail' order.id %}">عرض</a>
+                  <a class="btn" href="">تتبع الطلب</a>
+                </div>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty card">
+        <h3>ما عندكش طلبات حالياً</h3>
+        <p class="small">أول ما تعمل عملية شراء، رح تظهر هنا. زور المتجر وشوف العروض!</p>
+        <div style="margin-top:12px">
+          <a class="btn" href="{% url 'Vendor:vendor' %}">روح للمتجر</a>
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+</body>
+</html>

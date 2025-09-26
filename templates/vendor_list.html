@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قائمة المتاجر</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(90deg, #8e2de2, #4a00e0);
+            color: white;
+            padding: 25px 20px;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .signup-btn {
+            background: #fff;
+            color: #8e2de2;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+
+        .signup-btn:hover {
+            background: #f3f3f3;
+            color: #5a0aad;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .vendor-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .vendor-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .vendor-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .vendor-info {
+            padding: 15px;
+        }
+
+        .vendor-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4a00e0;
+            margin-bottom: 8px;
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+        .vendor-name:hover {
+            color: #6f00ff;
+        }
+
+        .vendor-description {
+            color: #666;
+            font-size: 15px;
+        }
+
+        .empty {
+            text-align: center;
+            color: #888;
+            font-size: 18px;
+            margin-top: 50px;
+        }
+
+        a.dashboard-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #4a00e0;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        a.dashboard-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                font-size: 20px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        🛍️ قائمة المتاجر النشطة
+        {% if not user.is_authenticated %}
+            <a href="{% url 'Account:signup_view' %}" class="signup-btn">إنشاء حساب</a>
+        {% endif %}
+        {% if user.is_authenticated %}
+            <a href="{% url 'Order:my_orders' %}" class="signup-btn">طلباتي</a>
+        {% endif %}
+    </header>
+
+    <a href="{% url 'Vendor:vendor_dashboard' %}" class="dashboard-link">لوحة التحكم</a>
+
+    <div class="container">
+        {% if vendors %}
+            {% for vendor in vendors %}
+                <div class="vendor-card">
+                    {% if vendor.logo %}
+                        <img src="{{ vendor.logo.url }}" alt="{{ vendor.business_name }}">
+                    {% endif %}
+                    <div class="vendor-info">
+                        <a href="{% url 'Vendor:vendor_products' vendor.id %}" class="vendor-name">{{ vendor.business_name }}</a>
+                        <div class="vendor-description">{{ vendor.vendor_type }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="empty">لا توجد متاجر نشطة حالياً.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
