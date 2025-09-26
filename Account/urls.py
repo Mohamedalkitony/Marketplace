@@ -6,6 +6,6 @@ from Marcetplace2 import settings
 app_name ='Account'
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('/signup_view',signup_view,name='signup_view'),
+    path('signup_view/',signup_view,name='signup_view'),
     path('account/user_login/',user_login, name='user_login'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
