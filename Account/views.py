@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
 from .models import Vendor
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
@@ -59,16 +59,29 @@ def signup_view(request):
     return render(request, "signup.html")
 
 
-
 def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+
         user = authenticate(request, username=username, password=password)
+
         if user is not None:
+            # يسجّل المستخدم
             login(request, user)
-            next_url = request.GET.get('next', 'cart_detail')  # يرجع المستخدم للصفحة المطلوبة أو لسلة المشتريات
-            return redirect(next_url)
+            # يعيد توجيهه للصفحة اللي تبيها
+            return redirect('Vendor:vendor')  # تأكد أن عندك url اسمه vendor داخل namespace Vendor
         else:
-            messages.error(request, 'اسم المستخدم أو كلمة السر غير صحيحة')
+            # لو كلمة السر أو اسم المستخدم غلط
+            messages.error(request, "اسم المستخدم أو كلمة المرور غير صحيحة")
+
+    # يرجع صفحة تسجيل الدخول
     return render(request, 'login.html')
+
+
+
+
+def user_logout(request):
+    logout(request)  # هادي تسكر جلسة المستخدم
+    return redirect('Vendor:vendor')  # تعيد توجيهه لصفحة تسجيل الدخول
+
