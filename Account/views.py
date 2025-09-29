@@ -76,7 +76,7 @@ def user_login(request):
             messages.error(request, "اسم المستخدم أو كلمة المرور غير صحيحة")
 
     # يرجع صفحة تسجيل الدخول
-    return render(request, 'login.html')
+    return render(request,'login.html')
 
 
 

@@ -17,7 +17,7 @@ def vendor_list(request):
 
 
 
-@login_required
+@login_required(login_url='/account/user_login/')
 def vendor_dashboard(request):
     try:
         vendor = request.user.vendor
@@ -39,7 +39,7 @@ def vendor_dashboard(request):
 
     
 
-@login_required
+@login_required(login_url='/account/user_login/')
 def add_product_view(request):
     try:
         vendor = request.user.vendor  # جرب نجيب vendor المرتبط بالمستخدم
@@ -74,7 +74,7 @@ def add_product_view(request):
     return render(request, 'dashboard/add_product.html')
 
 
-@login_required
+@login_required(login_url='/account/user_login/')
 def edit_product_view(request, pk):
     product = get_object_or_404(Product, pk=pk, vendor=request.user.vendor)
     categorys = Product.PRODUCT_CATEGORIES
@@ -92,7 +92,7 @@ def edit_product_view(request, pk):
     return render(request, "dashboard/edit_product.html", {"product": product,"categorys":categorys})
 
 
-@login_required
+@login_required(login_url='/account/user_login/')
 def delete_product_view(request, product_pk):
     product = get_object_or_404(Product, id=product_pk)
     
@@ -121,7 +121,7 @@ def product_detile(request, product_id):
 
 
 
-@login_required
+@login_required(login_url='/account/user_login/')
 def add_review(request, vendor_id):
     vendor = get_object_or_404(Vendor, id=vendor_id)
 
@@ -140,7 +140,7 @@ def add_review(request, vendor_id):
     return redirect('Vendor:vendor_products', vendor_id=vendor.id)
 
 
-@login_required
+@login_required(login_url='/account/user_login/')
 def vendor_review(request,vendor_id):
     
     vendor = get_object_or_404(Vendor,pk = vendor_id)

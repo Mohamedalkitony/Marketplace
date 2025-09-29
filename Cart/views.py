@@ -93,8 +93,7 @@ def checkout(request):
 
 
 
-
-
+@login_required(login_url='/account/user_login/')
 def checkout(request):
     cart = Cart(request)
 

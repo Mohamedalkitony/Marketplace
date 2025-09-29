@@ -142,8 +142,9 @@
         {% endif %}
     </header>
 
+    {% if request.user.user_type == 'vendor' %}
     <a href="{% url 'Vendor:vendor_dashboard' %}" class="dashboard-link">لوحة التحكم</a>
-
+    {% endif %}
     <div class="container">
         {% if vendors %}
             {% for vendor in vendors %}

@@ -125,7 +125,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "Account.CustomUser"
-LOGIN_URL = 'account/user_login/'
+LOGIN_URL = 'user_login'
 CART_SESSION_ID = 'cart'
 #SESSION_COOKIE_AGE = 1209600  # هذا لمدة يومين تقريباً
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
